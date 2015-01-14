@@ -1,0 +1,6 @@
+before_install:
+ - cp docs/site-example site # copy example site configuration
+ - make update # get other dependencies
+
+script:
+ - make V=s
