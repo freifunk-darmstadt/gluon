@@ -112,9 +112,16 @@ static void add_if_not_empty(struct json_object *obj, const char *key, struct js
 static bool interface_file_exists(const char *ifname, const char *name) {
 	const char *format = "/sys/class/net/%s/%s";
 	char path[strlen(format) + strlen(ifname) + strlen(name)];
+	const char *format2 = "/etc/respondd/typeoverride/%s/%s"; 
+	char path2[strlen(format2) + strlen(ifname) + strlen(name)];
+	bool detect,override;
 	snprintf(path, sizeof(path), format, ifname, name);
+	snprintf(path2, sizeof(path2), format2, ifname, name);
 
-	return !access(path, F_OK);
+	detect=!access(path, F_OK);
+	override=!access(path2, F_OK);
+
+	return detect || override;
 }
 
 static void mesh_add_subif(const char *ifname, struct json_object *wireless,
